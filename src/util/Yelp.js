@@ -1,10 +1,26 @@
-const apiKey = 'KQq3R5TWh5naHbQIjhONFKr6ltNxiVBSdw4X-VX6aujLFZKWO7WdGLjgg5RMLkzqxm5Ptpcx9T1YxzJ5BlZMoEhCf1Y4DAQOTFlFjU_hhjmk5qrWyoTKabckxbCEWnYx';
+const clientId = '1p4wP0QzgdWXWYnRSR7MBw';
+const secret = 'xttBbCgasLmFAPQMzdYIoT87b3L3D5hJNCwrt9xblyTzIhgkET41w0MNlQrC7fNq';
+let accessToken;
 
 const Yelp = {
+  getAccessToken: function() {
+if (accessToken) {
+return new Promise(resolve => resolve(accessToken));
+}
+
+return fetch(`https://cors-anywhere.herokuapp.com/https://api.yelp.com/oauth2/token?grant_type=client_credentials&client_id=${clientId}&client_secret=${secret}`, {
+method: 'POST'
+}).then(response => {
+return response.json();
+}).then(jsonResponse => {
+accessToken = jsonResponse.access_token;      });
+},
+
+
   search(term, location, sortBy) {
     return fetch(`https://cors-anywhere.herokuapp.com/https://api.yelp.com/v3/businesses/search?term=${term}&location=${location}&sort_by=${sortBy}`, {
       headers: {
-        Authorization: `Bearer ${apiKey}`
+        Authorization: `Bearer ${accessToken}`
       }
     }).then(response => {
       return response.json();
@@ -26,5 +42,6 @@ const Yelp = {
     });
   }
 };
+
 
 export default Yelp;
