@@ -23,39 +23,39 @@ class SearchBar extends React.Component {
     };
   }
 
-getSortByClass(sortByOption){
-  if (this.state.sortBy === sortByOption){
-    return 'Active'
+  getSortByClass(sortByOption) {
+    if (this.state.sortBy === sortByOption) {
+      return 'Active'
+    }
+    return ''
   }
-  return ''
+
+  handleSortByChange(sortByOption) {
+    this.setState({sortBy: sortByOption});
+  }
+
+  handleTermChange(event) {
+    this.setState({term: event.target.value});
 }
 
-handleSortByChange(sortByOption) {
-  this.setState({setState: sortByOption});
-}
+  handleLocationChange(event) {
+    this.setState({location: event.target.value});
+  }
 
-handleTermChange(event){
-  this.setState({term: event.target.value});
-}
+  handleSearch(event) {
+    this.props.searchYelp(this.state.term, this.state.location, this.state.sortBy);
 
-handleLocationChange(event){
-  this.setState({location: event.target.value});
-}
-
-handleSearch(event){
-  this.props.searchYelp(this.state.term, this.state.term, this.state.location, this.state.sortBy);
-  event.preventDefault();
-}
-
+    event.preventDefault();
+  }
 
   renderSortByOptions() {
     return Object.keys(this.sortByOptions).map(sortByOption => {
       let sortByOptionValue = this.sortByOptions[sortByOption];
       return (<li className={this.getSortByClass(sortByOptionValue)}
-                key={sortByOptionValue}
-                onClick={this.handleSortByChange}>
+                  key={sortByOptionValue}
+                  onClick={this.handleSortByChange}>
                 {sortByOption}
-              </li>);
+             </li>);
     });
   }
 
@@ -68,8 +68,8 @@ handleSearch(event){
           </ul>
         </div>
         <div className="SearchBar-fields">
-          <input onChange={this.handleTermChange} placeholder="Search Businesses" />
-          <input onChange={this.handleLocationChange} placeholder="Where?" />
+          <input placeholder="Search Businesses" onChange={this.handleTermChange} />
+          <input placeholder="Where?" onChange={this.handleLocationChange}/>
         </div>
         <div className="SearchBar-submit">
           <a onClick={this.handleSearch}>Lets Go</a>
